@@ -10,6 +10,10 @@ authenRoute.post(
   asyncCatch(emailPasswordValidate),
   authenController.userRegister
 );
-authenRoute.post("/login", asyncCatch(authenController.userLogin));
+authenRoute.post(
+  "/login",
+  asyncCatch(emailPasswordValidate),
+  asyncCatch(authenController.userLogin)
+);
 
 export default authenRoute;
