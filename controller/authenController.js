@@ -17,22 +17,23 @@ const authenController = {
     res.status(200).send("Register successfully");
   },
   userLogin: async (req, res) => {
-    // const { email, password } = req.body;
-    // console.log(typeof email);
-    // const findUser = await userModel.findOne({ email: email });
-    // if (!findUser) throw new Error("email or password is incorrect !!!");
-    // const isPassword = await bcrypt.compare(password, findUser.password);
-    // if (!isPassword) throw new Error("email or password is incorrect !!!");
-    // const payload = {
-    //   id: findUser._id,
-    //   firstName: findUser.firstName,
-    //   lastName: findUser.lastName,
-    //   phoneNumber: findUser.phoneNumber,
-    //   admin: findUser.admin,
-    // };
-    // const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, {
-    //   expiresIn: "1d",
-    // });
+    const { email, password } = req.body;
+    console.log(typeof email);
+    const findUser = await userModel.findOne({ email: email });
+    console.log(findUser);
+    if (!findUser) throw new Error("email or password is incorrect !!!");
+    const isPassword = await bcrypt.compare(password, findUser.password);
+    if (!isPassword) throw new Error("email or password is incorrect !!!");
+    const payload = {
+      id: findUser._id,
+      firstName: findUser.firstName,
+      lastName: findUser.lastName,
+      phoneNumber: findUser.phoneNumber,
+      admin: findUser.admin,
+    };
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_KEY, {
+      expiresIn: "1d",
+    });
     res.status(200).status(`testing`);
   },
 };

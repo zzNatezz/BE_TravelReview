@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { asyncCatch } from "../utils/asynCatch.js";
-import authenController from "../controller/AuthenController.js";
+import authenController from "../controller/authenController.js";
 import { emailPasswordValidate } from "../validate/validation.js";
 
 const authenRoute = Router();
@@ -10,7 +10,7 @@ authenRoute.post(
   asyncCatch(emailPasswordValidate),
   authenController.userRegister
 );
-authenRoute.get(
+authenRoute.post(
   "/login",
   asyncCatch(emailPasswordValidate),
   asyncCatch(authenController.userLogin)
