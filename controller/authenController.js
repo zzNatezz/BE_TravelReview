@@ -19,7 +19,6 @@ const authenController = {
   userLogin: async (req, res) => {
     const { email, password } = req.body;
     const findUser = await userModel.findOne({ email: email });
-    console.log(findUser);
     if (!findUser) throw new Error("email or password is incorrect !!!");
 
     const isPassword = await bcrypt.compare(password, findUser.password);
@@ -30,7 +29,13 @@ const authenController = {
     const accessToken = jwt.sign({ findUser }, process.env.JWT_ACCESS_KEY, {
       expiresIn: "1d",
     });
-    res.status(200).send(accessToken);
+
+    const options = {
+      httpOnly: true,
+      expires: new Date(Date.now() + 10 * 10 * 60000),
+    };
+
+    res.status(200).cookie("token", accessToken, options).send("Successfully");
   },
 };
 

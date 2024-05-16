@@ -8,10 +8,8 @@ export const emailPasswordValidate = async (req, res, next) => {
   const validateEmail = validator.isEmail(email);
 
   const isPasswordType = regexPass.test(password);
-  console.log("isPasswordType ==>", isPasswordType);
 
   if (!validateEmail) throw new Error("Email is invalid");
-  console.log("validateEmail ==>", validateEmail);
 
   if (!isPasswordType) throw new Error("Password is incorrect type");
   next();

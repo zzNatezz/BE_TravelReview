@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import authenRoute from "./routes/authenRoute.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const sv = express();
 
 sv.use(express.json());
 sv.use(morgan("combined"));
+sv.use(cookieParser());
 
 sv.use("/index", (req, res) => {
   res.status(200).send("Hello world");
