@@ -32,7 +32,7 @@ const authenController = {
 
     const options = {
       httpOnly: true,
-      expires: new Date(Date.now() + 10 * 10 * 60000),
+      expires: new Date(Date.now() + 10 * 10 * 600000),
     };
 
     res.status(200).cookie("token", accessToken, options).send("Successfully");
