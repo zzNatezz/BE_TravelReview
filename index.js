@@ -15,8 +15,7 @@ sv.use(morgan("combined"));
 sv.use(cookieParser());
 sv.use(
   cors({
-    origin: "https://travel-review-web.vercel.app", // Adjust accordingly
-    credentials: true,
+    origin: "*",
   })
 );
 
