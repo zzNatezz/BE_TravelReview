@@ -11,13 +11,12 @@ dotenv.config();
 const sv = express();
 
 sv.use(express.json());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
 
-sv.use(
-  cors({
-    credentials: true,
-    origin,
-  })
-);
+sv.use(cors(corsOptions));
 
 sv.use(morgan("combined"));
 sv.use(cookieParser());
