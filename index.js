@@ -13,7 +13,11 @@ const sv = express();
 sv.use(express.json());
 sv.use(morgan("combined"));
 sv.use(cookieParser());
-sv.use(cors());
+sv.use(
+  cors({
+    origin: "*",
+  })
+);
 
 sv.use("/index", (req, res) => {
   res.status(200).send("Hello world");
