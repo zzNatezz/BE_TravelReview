@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { userModel } from "../model/userModel.js";
 
+let fakeDataRefreshToken = [];
+
 const authenController = {
   userRegister: async (req, res) => {
     const { firstName, lastName, email, phoneNumber, password } = req.body;
@@ -16,6 +18,18 @@ const authenController = {
     });
     res.status(200).send("Register successfully");
   },
+
+  generateAccessToken: (user) => {
+    return jwt.sign({ user }, process.env.JWT_ACCESS_KEY, {
+      expiresIn: "30s",
+    });
+  },
+  generateRefToken: (user) => {
+    return jwt.sign({ user }, process.env.JWT_REFERSH_KEY, {
+      expiresIn: "30d",
+    });
+  },
+
   userLogin: async (req, res) => {
     const { email, password } = req.body;
     const findUser = await userModel.findOne({ email: email });
@@ -26,16 +40,50 @@ const authenController = {
 
     findUser.password = undefined;
 
-    const accessToken = jwt.sign({ findUser }, process.env.JWT_ACCESS_KEY, {
-      expiresIn: "1d",
-    });
+    const accessToken = authenController.generateAccessToken(findUser);
 
+    const refToken = authenController.generateRefToken(findUser);
+    fakeDataRefreshToken.push(refToken);
     const options = {
       httpOnly: true,
-      expires: new Date(Date.now() + 10 * 10 * 600000),
+      secure: false,
+      sameSite: "strict",
     };
 
-    res.status(200).cookie("token", accessToken, options).send("Successfully");
+    res.status(200).cookie("refToken", refToken, options);
+
+    res.status(200).send(accessToken);
+  },
+
+  requestRefToken: async (req, res) => {
+    const refToken = req.cookies.refToken;
+    if (!refToken) throw new Error("You are not authenticated");
+    if (!fakeDataRefreshToken.includes(refToken))
+      throw new Error("Token is invalid");
+    jwt.verify(refToken, process.env.JWT_REFERSH_KEY, (err, user) => {
+      if (err) throw new Error("Token is invalid");
+      fakeDataRefreshToken = fakeDataRefreshToken.filter(
+        (token) => token !== refToken
+      );
+      const newAccesstoken = authenController.generateAccessToken(user);
+      const newRefToken = authenController.generateRefToken(user);
+      fakeDataRefreshToken.push(newRefToken);
+      const options = {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+      };
+      res.cookie("refToken", newRefToken, options);
+      res.status(200).send({ new_access_token: newAccesstoken });
+    });
+  },
+
+  userLogout: async (req, res) => {
+    res.clearCookie("refToken");
+    fakeDataRefreshToken = fakeDataRefreshToken.filter(
+      (token) => token !== req.cookies.refToken
+    );
+    res.send("Logged out successfully !!");
   },
 };
 
