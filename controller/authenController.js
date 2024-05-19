@@ -57,7 +57,9 @@ const authenController = {
 
   requestRefToken: async (req, res) => {
     const refToken = req.cookies.refToken;
-    if (!refToken) throw new Error("You are not authenticated");
+    if (!refToken) {
+      return res.status(401).send("refToken is authenticated");
+    } //<-- Đây là lỗi mà browser đang báo
     if (!fakeDataRefreshToken.includes(refToken))
       throw new Error("Token is invalid");
     jwt.verify(refToken, process.env.JWT_REFERSH_KEY, (err, user) => {
