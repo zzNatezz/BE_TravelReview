@@ -13,7 +13,7 @@ const sv = express();
 
 sv.use(express.json());
 const corsOptions = {
-  origin: "*",
+  origin: "https://travel-review-web.vercel.app",
   credentials: true,
 };
 
