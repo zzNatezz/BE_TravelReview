@@ -15,5 +15,10 @@ postRoute.post(
 
 postRoute.get("/", asyncCatch(postController.allPosts));
 postRoute.get("/:userId", asyncCatch(postController.getPostWithId));
+postRoute.put(
+  "/:postId/:userId",
+  uploader.single("file"),
+  asyncCatch(postController.updateImage)
+);
 
 export default postRoute;
