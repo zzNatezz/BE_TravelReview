@@ -13,6 +13,6 @@ const userSchema = new mongoose.Schema({
   status: Boolean,
 });
 
-const userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.model("user", userSchema);
 
 export { userModel };

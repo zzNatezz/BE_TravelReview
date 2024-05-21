@@ -6,6 +6,7 @@ import authenRoute from "./routes/authenRoute.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoute from "./routes/userRoute.js";
+import postRoute from "./routes/postRoute.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ sv.use("/index", (req, res) => {
 
 sv.use("/v1/auth", authenRoute);
 sv.use("/v1/user", userRoute);
+sv.use("/v1/content", postRoute);
 
 mongoose
   .connect(process.env.MONGODB)
