@@ -75,7 +75,10 @@ const postController = {
 
   // get all post
   allPosts: async (req, res) => {
-    const posts = await postModel.find().populate("manWhoCreate");
+    const posts = await postModel
+      .find()
+      .populate("manWhoCreate")
+      .sort({ createAt: -1 });
     res.status(200).send(posts);
   },
 
