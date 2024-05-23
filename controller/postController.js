@@ -6,6 +6,9 @@ const postController = {
     const { userId } = req.params;
     const { content, isPublic } = req.body;
     const file = req.file;
+    const date = new Date();
+    date.setHours(date.getHours() + 7);
+    const isoDate = date.toISOString();
     if (!file) {
       const createPost = await postModel.create({
         manWhoCreate: userId,
@@ -15,6 +18,7 @@ const postController = {
           url: "",
           publicId: "",
         },
+        createAt: isoDate,
       });
       res.status(200).send(createPost);
     } else {
@@ -40,6 +44,7 @@ const postController = {
           url: secureUrl,
           publicId,
         },
+        createAt: isoDate,
       });
       res.status(200).send(createPost);
     }

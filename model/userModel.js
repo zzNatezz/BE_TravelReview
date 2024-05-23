@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   userName: { type: String, require: true },
   avatar: { type: String || null },
   admin: { type: Boolean, default: false },
-  createAt: { type: Date, default: Date.now },
+  createAt: Date,
   updateAt: Date,
   status: Boolean,
 });

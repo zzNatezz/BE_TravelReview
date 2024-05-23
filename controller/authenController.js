@@ -9,10 +9,14 @@ const authenController = {
     const { userName, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(password, salt);
+    const date = new Date();
+    date.setHours(date.getHours() + 7);
+    const isoDate = date.toISOString();
     await userModel.create({
       userName: userName,
       email: email,
       password: hashed,
+      createAt: isoDate,
     });
     res.status(200).send("Register successfully");
   },

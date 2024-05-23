@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: userModel,
   },
-  createAt: { type: Date, default: Date.now },
+  createAt: Date,
   isPublic: { type: Boolean, default: true },
   updateAt: Date,
   content: { type: String, require: true },
