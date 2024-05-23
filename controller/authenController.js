@@ -6,13 +6,11 @@ let fakeDataRefreshToken = [];
 
 const authenController = {
   userRegister: async (req, res) => {
-    const { firstName, lastName, email, phoneNumber, password } = req.body;
+    const { userName, email, password } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(password, salt);
     await userModel.create({
-      firstName: firstName || "",
-      lastName: lastName || "",
-      phoneNumber: phoneNumber || "",
+      userName: userName,
       email: email,
       password: hashed,
     });

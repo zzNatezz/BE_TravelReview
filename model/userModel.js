@@ -3,9 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   email: { type: String, require: true },
   password: { type: String, require: true },
-  firstName: String,
-  lastName: String,
-  phoneNumber: String,
+  userName: { type: String, require: true },
   avatar: { type: String || null },
   admin: { type: Boolean, default: false },
   createAt: { type: Date, default: Date.now },
