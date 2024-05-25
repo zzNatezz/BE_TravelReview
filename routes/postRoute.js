@@ -14,7 +14,7 @@ postRoute.post(
 );
 
 postRoute.get("/", asyncCatch(postController.allPosts));
-postRoute.get("/:userId", asyncCatch(postController.getPostWithId));
+postRoute.get("/:postId", asyncCatch(postController.getPostWithId));
 postRoute.put(
   "/:postId/:userId",
   uploader.single("file"),

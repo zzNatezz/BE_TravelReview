@@ -1,3 +1,4 @@
+import { isObjectIdOrHexString } from "mongoose";
 import { postModel } from "../model/postModel.js";
 import { cloudinary } from "../utils/uploader.js";
 
@@ -84,11 +85,13 @@ const postController = {
 
   //get post with user id
   getPostWithId: async (req, res) => {
-    const userId = req.params.userId;
-    const user = await postModel
-      .findOne({ manWhoCreate: userId })
-      .populate("manWhoCreate");
-    res.send(user);
+    const { postId } = req.params;
+    console.log(postId);
+    if (!isObjectIdOrHexString(postId))
+      throw new Error("The post has been deleted");
+    const post = await postModel.findById(postId).populate("manWhoCreate");
+    if (!post) throw new Error(`Can't find the post`);
+    res.status(200).send(post);
   },
 };
 
