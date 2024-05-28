@@ -26,3 +26,10 @@ export const postContentValidate = (req, res, next) => {
   if (!isObjectIdOrHexString(userId)) throw new Error("User is invalid");
   next();
 };
+
+export const authenUserValidate = (req, res, next) => {
+  const { userId, postId } = req.params;
+  if (!userId) throw new Error("please login");
+  if (!postId) throw new Error(" Post has been removed !!! ");
+  next();
+};

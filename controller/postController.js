@@ -1,6 +1,7 @@
 import { isObjectIdOrHexString } from "mongoose";
 import { postModel } from "../model/postModel.js";
 import { cloudinary } from "../utils/uploader.js";
+import { commentModel } from "../model/commetModel.js";
 
 const postController = {
   uploadContent: async (req, res) => {
@@ -21,6 +22,12 @@ const postController = {
         },
         createAt: isoDate,
       });
+      await createPost.save();
+      await commentModel.create({
+        post: createPost._id,
+        comment: [],
+      });
+
       res.status(200).send(createPost);
     } else {
       const typefile = file.mimetype.split("/")[0];
@@ -46,6 +53,11 @@ const postController = {
           publicId,
         },
         createAt: isoDate,
+      });
+      await createPost.save();
+      await commentModel.create({
+        post: createPost._id,
+        comment: [],
       });
       res.status(200).send(createPost);
     }

@@ -8,6 +8,8 @@ import cors from "cors";
 import userRoute from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 
+import commentRoute from "./routes/commentRoute.js";
+
 dotenv.config();
 
 const sv = express();
@@ -40,6 +42,7 @@ sv.use("/index", (req, res) => {
 sv.use("/v1/auth", authenRoute);
 sv.use("/v1/user", userRoute);
 sv.use("/v1/content", postRoute);
+sv.use("/v1/comment", commentRoute);
 
 mongoose
   .connect(process.env.MONGODB)
