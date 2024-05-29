@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { userModel } from "../model/userModel.js";
+import { cloudinary } from "../utils/uploader.js";
 
 let fakeDataRefreshToken = [];
 
@@ -12,13 +13,46 @@ const authenController = {
     const date = new Date();
     date.setHours(date.getHours() + 7);
     const isoDate = date.toISOString();
-    await userModel.create({
-      userName: userName,
-      email: email,
-      password: hashed,
-      createAt: isoDate,
-    });
-    res.status(200).send("Register successfully");
+    const file = req.file;
+    if (!file) {
+      await userModel.create({
+        userName: userName,
+        email: email,
+        password: hashed,
+        createAt: isoDate,
+        avatar: {
+          url: "",
+          publicId: "",
+        },
+      });
+      res.status(200).send("Register successfully");
+    } else {
+      const typefile = file.mimetype.split("/")[0];
+      if (typefile !== "image") throw new Error("Only image type is accepted");
+      const dataUrl = `data:${file.mimetype};base64,${file.buffer?.toString(
+        "base64"
+      )}`;
+      const fileName = file.originalname.split(".")[0];
+      const uploaded = await cloudinary.uploader.upload(dataUrl, {
+        public_id: fileName,
+        resource_type: "image",
+      });
+
+      const secureUrl = uploaded.secure_url;
+      const publicId = uploaded.public_id;
+
+      await userModel.create({
+        userName: userName,
+        email: email,
+        password: hashed,
+        createAt: isoDate,
+        avatar: {
+          url: secureUrl,
+          publicId,
+        },
+      });
+      res.status(200).send("Register successfully");
+    }
   },
 
   generateAccessToken: (user) => {

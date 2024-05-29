@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
   createAt: Date,
   updateAt: Date,
   status: Boolean,
+  avatar: {
+    url: String,
+    publicId: String,
+  },
 });
 
 const userModel = mongoose.model("user", userSchema);
