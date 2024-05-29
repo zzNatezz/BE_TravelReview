@@ -3,11 +3,13 @@ import { asyncCatch } from "../utils/asynCatch.js";
 import authenController from "../controller/authenController.js";
 import { emailPasswordValidate } from "../validate/validation.js";
 import { middlewareToken } from "../controller/middlewareController.js";
+import { uploader } from "../utils/uploader.js";
 
 const authenRoute = Router();
 
 authenRoute.post(
   "/register",
+  uploader.single("file"),
   asyncCatch(emailPasswordValidate),
   asyncCatch(authenController.userRegister)
 );
