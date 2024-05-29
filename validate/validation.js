@@ -1,5 +1,6 @@
 import { isObjectIdOrHexString } from "mongoose";
 import validator from "validator";
+import { userModel } from "../model/userModel.js";
 
 export const emailPasswordValidate = async (req, res, next) => {
   const regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -18,10 +19,12 @@ export const emailPasswordValidate = async (req, res, next) => {
   next();
 };
 
-export const postContentValidate = (req, res, next) => {
+export const postContentValidate = async (req, res, next) => {
   const { userId } = req.params;
   const { content } = req.body;
   if (!userId) throw new Error("You are not authenticated");
+  const isUser = await userModel.findById(userId);
+  if (!isUser) throw new Error("User was removed !!!!");
   if (!content) throw new Error("The content is required");
   if (!isObjectIdOrHexString(userId)) throw new Error("User is invalid");
   next();
