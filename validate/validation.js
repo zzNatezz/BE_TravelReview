@@ -14,8 +14,6 @@ export const emailPasswordValidate = async (req, res, next) => {
   if (!validateEmail) throw new Error("Email is invalid");
 
   if (!isPasswordType) throw new Error("Password is incorrect type");
-
-  if (!userName) throw new Error("Please let me know you name");
   next();
 };
 

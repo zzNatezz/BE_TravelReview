@@ -8,6 +8,7 @@ let fakeDataRefreshToken = [];
 const authenController = {
   userRegister: async (req, res) => {
     const { userName, email, password } = req.body;
+    if (!userName) throw new Error("Please fill your name");
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(password, salt);
     const date = new Date();
