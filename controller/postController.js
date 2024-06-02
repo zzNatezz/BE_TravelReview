@@ -86,6 +86,21 @@ const postController = {
     res.status(201).send("Image has been updated");
   },
 
+  //only update content in post
+  updateContent: async (req, res) => {
+    const { userId, postId } = req.params;
+    const { content } = req.body;
+    if (!isObjectIdOrHexString(userId) || !isObjectIdOrHexString(postId))
+      throw new Error("Please check post Id and user Id");
+    if (!userId) throw new Error("Please login first");
+    if (!postId)
+      throw new Error(`Can't update because something went wrong with post`);
+    const postUpdated = await postModel.findByIdAndUpdate(postId, content);
+    if (!postUpdated)
+      throw new Error("Post was removed, can not update the content ");
+    res.status(201).send("Post has been updated");
+  },
+
   // get all post
   allPosts: async (req, res) => {
     const posts = await postModel
@@ -98,12 +113,30 @@ const postController = {
   //get post with user id
   getPostWithId: async (req, res) => {
     const { postId } = req.params;
-    console.log(postId);
     if (!isObjectIdOrHexString(postId))
       throw new Error("The post has been deleted");
     const post = await postModel.findById(postId).populate("manWhoCreate");
     if (!post) throw new Error(`Can't find the post`);
     res.status(200).send(post);
+  },
+
+  //removePost
+  removedPost: async (req, res) => {
+    const { userId, postId } = req.params;
+    if (!isObjectIdOrHexString(userId) || !isObjectIdOrHexString(postId))
+      throw new Error("Please check postId and userId");
+    if (!userId) throw new Error("Please login first");
+    if (!postId)
+      throw new Error(`Can't removed because something went wrong with post`);
+    const postRemoved = await postModel.findByIdAndDelete(postId);
+    if (!postRemoved)
+      throw new Error("Please reload page because the post was removed");
+    const commentRemoved = await commentModel.findOneAndDelete({
+      post: postId,
+    });
+    if (!commentRemoved)
+      throw new Error("Please reload page because the post was removed");
+    res.status(200).send("Removed successfully");
   },
 };
 

@@ -21,4 +21,11 @@ postRoute.put(
   asyncCatch(postController.updateImage)
 );
 
+postRoute.delete("/:userId/:postId", asyncCatch(postController.removedPost));
+postRoute.put(
+  "/string/:userId/:postId",
+  asyncCatch(postController.updateContent)
+);
+postRoute.put("/file/:userId/:postId", asyncCatch(postController.updateImage));
+
 export default postRoute;
