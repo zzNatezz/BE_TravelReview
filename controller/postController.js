@@ -95,9 +95,14 @@ const postController = {
     if (!userId) throw new Error("Please login first");
     if (!postId)
       throw new Error(`Can't update because something went wrong with post`);
-    const postUpdated = await postModel.findByIdAndUpdate(postId, content);
+    const postUpdated = await postModel.findOneAndUpdate(
+      { $and: [{ _id: postId }, { manWhoCreate: userId }] },
+      { content }
+    );
     if (!postUpdated)
-      throw new Error("Post was removed, can not update the content ");
+      throw new Error(
+        "Post was removed, can not update the content Or you do not own the post"
+      );
     res.status(201).send("Post has been updated");
   },
 
