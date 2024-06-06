@@ -28,6 +28,47 @@ const commentController = {
     if (!comments) throw new Error("Post is unavailable now !!! ");
     res.status(200).send(comments);
   },
+  editComment: async (req, res) => {
+    const { userId, commentId, postId } = req.params;
+    const { content } = req.body;
+    if (!isObjectIdOrHexString(userId) || !isObjectIdOrHexString(commentId))
+      throw new Error("Please check post Id and user Id");
+    if (!userId) throw new Error("Please login first");
+    if (!commentId)
+      throw new Error(`Can't update because something went wrong with post`);
+    const post = await commentModel
+      .findOne({ post: postId })
+      .populate({ path: "comment", populate: { path: "userId" } });
+    if (!post)
+      throw new Error(
+        "Comment was removed, can not update the content Or you do not own the comment"
+      );
+    const comment = post.comment.find((item) => (item._id = commentId));
+    comment.comment = content;
+    await post.save();
+    res.status(201).send("Comment has been updated");
+  },
+
+  removeComment: async (req, res) => {
+    const { userId, commentId, postId } = req.params;
+    if (!isObjectIdOrHexString(userId) || !isObjectIdOrHexString(commentId))
+      throw new Error("Please check post Id and user Id");
+    if (!userId) throw new Error("Please login first");
+    if (!commentId) throw new Error(`Comment may be removed`);
+
+    const post = await commentModel.findOne({ post: postId });
+
+    if (!post) throw new Error("Post has been removed");
+
+    const getComment = post.comment.find((item) => (item._id = commentId));
+
+    const remainItems = post.comment.filter(
+      (remainItem) => remainItem._id !== getComment._id
+    );
+    post.comment = remainItems;
+    await post.save();
+    res.status(201).send("The removal successfully");
+  },
 };
 
 export default commentController;

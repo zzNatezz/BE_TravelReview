@@ -12,5 +12,14 @@ commentRoute.post(
 );
 
 commentRoute.get("/:postId", asyncCatch(commentController.allCommentInPost));
+commentRoute.put(
+  "/:postId/:userId/:commentId",
+  asyncCatch(commentController.editComment)
+);
+
+commentRoute.delete(
+  "/:postId/:userId/:commentId",
+  asyncCatch(commentController.removeComment)
+);
 
 export default commentRoute;
