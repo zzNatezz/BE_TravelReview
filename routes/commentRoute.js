@@ -22,4 +22,9 @@ commentRoute.delete(
   asyncCatch(commentController.removeComment)
 );
 
+commentRoute.get(
+  "/quantities/:postId",
+  asyncCatch(commentController.quantitieComment)
+);
+
 export default commentRoute;

@@ -69,6 +69,14 @@ const commentController = {
     await post.save();
     res.status(201).send("The removal successfully");
   },
+
+  quantitieComment: async (req, res) => {
+    const { postId } = req.params;
+    const post = await commentModel.findOne({ post: postId });
+    if (!post) throw new Error("Post was removed");
+    const quantitesComment = post.comment.length;
+    res.status(200).send({ quantitesComment });
+  },
 };
 
 export default commentController;
