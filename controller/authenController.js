@@ -58,7 +58,7 @@ const authenController = {
 
   generateAccessToken: (user) => {
     return jwt.sign({ user }, process.env.JWT_ACCESS_KEY, {
-      expiresIn: "10s",
+      expiresIn: "20s",
     });
   },
   generateRefToken: (user) => {
@@ -83,7 +83,7 @@ const authenController = {
     fakeDataRefreshToken.push(refToken);
     const options = {
       httpOnly: true,
-      secure: false,
+      secure: process.env.ENVIRIONMENT === "DEVELOPMENT" ? false : true,
       sameSite: "strict",
     };
 
@@ -93,7 +93,8 @@ const authenController = {
   },
 
   requestRefToken: async (req, res) => {
-    const refToken = req.cookies.refToken;
+    const { refToken } = req.cookies;
+    console.log(req);
     if (!refToken) {
       return res.status(401).send("refToken is authenticated");
     } //<-- Đây là lỗi mà browser đang báo
@@ -109,8 +110,7 @@ const authenController = {
       fakeDataRefreshToken.push(newRefToken);
       const options = {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: process.env.ENVIRIONMENT === "DEVELOPMENT" ? false : true,
       };
       res.cookie("refToken", newRefToken, options);
       res.status(200).send({ new_access_token: newAccesstoken });
