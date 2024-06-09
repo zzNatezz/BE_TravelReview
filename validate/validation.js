@@ -9,11 +9,13 @@ export const emailPasswordValidate = async (req, res, next) => {
   const { email, password, userName } = req.body;
   const validateEmail = validator.isEmail(email);
 
-  const isPasswordType = regexPass.test(password);
+  // const isPasswordType = regexPass.test(password);
+  // console.log(isPasswordType);
 
   if (!validateEmail) throw new Error("Email is invalid");
-
-  if (!isPasswordType) throw new Error("Password is incorrect type");
+  // if (!isPasswordType) throw new Error("Password is incorrect type");
+  if (!password) throw new Error("Password is required");
+  if (!userName) throw new Error("UserName is required");
   next();
 };
 
