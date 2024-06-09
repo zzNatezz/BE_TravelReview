@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { asyncCatch } from "../utils/asynCatch.js";
 import authenController from "../controller/authenController.js";
-import { emailPasswordValidate } from "../validate/validation.js";
+import {
+  emailPasswordValidate,
+  loginValidate,
+} from "../validate/validation.js";
 import { middlewareToken } from "../controller/middlewareController.js";
 import { uploader } from "../utils/uploader.js";
 
@@ -15,7 +18,7 @@ authenRoute.post(
 );
 authenRoute.post(
   "/login",
-  asyncCatch(emailPasswordValidate),
+  asyncCatch(loginValidate),
   asyncCatch(authenController.userLogin)
 );
 
