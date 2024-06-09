@@ -58,7 +58,7 @@ const authenController = {
 
   generateAccessToken: (user) => {
     return jwt.sign({ user }, process.env.JWT_ACCESS_KEY, {
-      expiresIn: "5s",
+      expiresIn: "1d",
     });
   },
   generateRefToken: (user) => {
