@@ -7,7 +7,7 @@ const userRoute = Router();
 
 userRoute.get(
   "/",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(userController.getAllUser)
 );
 userRoute.get("/:id", asyncCatch(userController.getUser));

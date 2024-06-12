@@ -20,18 +20,18 @@ postRoute.get("/:postId", asyncCatch(postController.getPostWithId));
 postRoute.put(
   "/:postId/:userId",
   uploader.single("file"),
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(postController.updateImage)
 );
 
 postRoute.delete(
   "/:userId/:postId",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(postController.removedPost)
 );
 postRoute.put(
   "/string/:userId/:postId",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(postController.updateContent)
 );
 postRoute.put("/file/:userId/:postId", asyncCatch(postController.updateImage));

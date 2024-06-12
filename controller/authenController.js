@@ -94,7 +94,7 @@ const authenController = {
 
   requestRefToken: async (req, res) => {
     const { refToken } = req.cookies;
-    console.log(req);
+    console.log(refToken);
     if (!refToken) {
       return res.status(401).send("refToken is authenticated");
     } //<-- Đây là lỗi mà browser đang báo

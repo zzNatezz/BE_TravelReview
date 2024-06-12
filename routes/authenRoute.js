@@ -13,7 +13,6 @@ const authenRoute = Router();
 authenRoute.post(
   "/register",
   uploader.single("file"),
-  asyncCatch(emailPasswordValidate),
   asyncCatch(authenController.userRegister)
 );
 authenRoute.post(
@@ -26,7 +25,7 @@ authenRoute.post("/refresh", asyncCatch(authenController.requestRefToken));
 
 authenRoute.post(
   "/logout",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(authenController.userLogout)
 );
 

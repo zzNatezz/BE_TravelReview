@@ -15,13 +15,13 @@ commentRoute.post(
 commentRoute.get("/:postId", asyncCatch(commentController.allCommentInPost));
 commentRoute.put(
   "/:postId/:userId/:commentId",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(commentController.editComment)
 );
 
 commentRoute.delete(
   "/:postId/:userId/:commentId",
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(commentController.removeComment)
 );
 
