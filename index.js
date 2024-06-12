@@ -9,6 +9,7 @@ import userRoute from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 
 import commentRoute from "./routes/commentRoute.js";
+import likeRoute from "./routes/isLikeRoute.js";
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ sv.use("/v1/auth", authenRoute);
 sv.use("/v1/user", userRoute);
 sv.use("/v1/content", postRoute);
 sv.use("/v1/comment", commentRoute);
+sv.use("/v1/like", likeRoute);
 
 mongoose
   .connect(process.env.MONGODB)

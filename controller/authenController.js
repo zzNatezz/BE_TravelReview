@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { userModel } from "../model/userModel.js";
 import { cloudinary } from "../utils/uploader.js";
+import listlikePost from "../model/likePostModel.js";
 
 let fakeDataRefreshToken = [];
 
@@ -16,7 +17,7 @@ const authenController = {
     const isoDate = date.toISOString();
     const file = req.file;
     if (!file) {
-      await userModel.create({
+      const newUser = await userModel.create({
         userName: userName,
         email: email,
         password: hashed,
@@ -25,6 +26,10 @@ const authenController = {
           url: "",
           publicId: "",
         },
+      });
+      await listlikePost.create({
+        owner: newUser._id.toString(),
+        listLike: [],
       });
       res.status(200).send("Register successfully");
     } else {
@@ -42,7 +47,7 @@ const authenController = {
       const secureUrl = uploaded.secure_url;
       const publicId = uploaded.public_id;
 
-      await userModel.create({
+      const newUser = await userModel.create({
         userName: userName,
         email: email,
         password: hashed,
@@ -51,6 +56,10 @@ const authenController = {
           url: secureUrl,
           publicId,
         },
+      });
+      await listlikePost.create({
+        owner: newUser._id.toString(),
+        listLike: [],
       });
       res.status(200).send("Register successfully");
     }
