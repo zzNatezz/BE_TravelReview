@@ -22,7 +22,7 @@ const likeController = {
   getLikeList: async (req, res) => {
     const { userId } = req.params;
     const listLike = await listlikePost.find({ owner: userId });
-    res.status(200).send(listLike);
+    res.status(200).send(listLike.listLike);
   },
   isInLikeList: async (req, res) => {
     const { userId, postId } = req.params;
