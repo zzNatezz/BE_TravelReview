@@ -10,7 +10,7 @@ const postRoute = Router();
 postRoute.post(
   "/:userId",
   uploader.single("file"),
-  asyncCatch(middlewareToken.verifyToken),
+  // asyncCatch(middlewareToken.verifyToken),
   asyncCatch(postContentValidate),
   asyncCatch(postController.uploadContent)
 );

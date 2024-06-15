@@ -13,6 +13,8 @@ const postSchema = new mongoose.Schema({
   image: {
     url: String,
     publicId: String,
+    width: Number,
+    height: Number,
   },
 });
 

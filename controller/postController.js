@@ -40,9 +40,11 @@ const postController = {
         public_id: fileName,
         resource_type: "image",
       });
-
+      console.log(uploaded);
       const secureUrl = uploaded.secure_url;
       const publicId = uploaded.public_id;
+      const width = uploaded.width;
+      const height = uploaded.height;
 
       const createPost = await postModel.create({
         manWhoCreate: userId,
@@ -51,6 +53,8 @@ const postController = {
         image: {
           url: secureUrl,
           publicId,
+          width,
+          height,
         },
         createAt: isoDate,
       });
