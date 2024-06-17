@@ -12,4 +12,6 @@ userRoute.get(
 );
 userRoute.get("/:id", asyncCatch(userController.getUser));
 
+userRoute.get("/query/:keyword", asyncCatch(userController.userFinding));
+
 export default userRoute;

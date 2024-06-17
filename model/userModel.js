@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+userSchema.index({ userName: "text" });
+
 const userModel = mongoose.model("user", userSchema);
+
+userModel.createIndexes();
 
 export { userModel };

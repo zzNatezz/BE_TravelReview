@@ -11,6 +11,15 @@ const userController = {
     if (!user) throw new Error("User is invalid");
     res.status(200).send(user);
   },
+  userFinding: async (req, res) => {
+    const { keyword } = req.params;
+    const users = await userModel.find({ $text: { $search: keyword } });
+    const resultUserObj = users.map((item) => ({
+      userName: item.userName,
+      avatar: item.avatar,
+    }));
+    res.status(200).send(resultUserObj);
+  },
 };
 
 export default userController;
