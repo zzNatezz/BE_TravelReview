@@ -17,7 +17,7 @@ const sv = express();
 
 sv.use(express.json());
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://travel-review-web.vercel.app"],
+  origin: ["http://localhost:3000", "https://travel-review-web.vercel.app", 'http://localhost:54735'],
   credentials: true,
 };
 
